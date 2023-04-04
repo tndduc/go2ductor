@@ -1,8 +1,6 @@
 package com.duck.go2ductor.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 /**
@@ -14,6 +12,7 @@ import java.math.BigDecimal;
 @Table(name = "medician")
 public class Medician {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private String manufacturer;

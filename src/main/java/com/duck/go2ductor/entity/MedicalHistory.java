@@ -1,8 +1,6 @@
 package com.duck.go2ductor.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author DucTN
@@ -13,6 +11,7 @@ import javax.persistence.Table;
 @Table(name = "medical_history")
 public class MedicalHistory {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long appointment_id;
     private Long id_patient;

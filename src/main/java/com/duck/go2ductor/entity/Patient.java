@@ -1,8 +1,6 @@
 package com.duck.go2ductor.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 /**
@@ -14,6 +12,7 @@ import java.time.LocalDate;
 @Table(name = "patient")
 public class Patient {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String password;
     private String last_name;
