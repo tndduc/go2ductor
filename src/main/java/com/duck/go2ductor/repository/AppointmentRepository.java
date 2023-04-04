@@ -9,4 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @on 4/4/2023
  */
 public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
+
 }

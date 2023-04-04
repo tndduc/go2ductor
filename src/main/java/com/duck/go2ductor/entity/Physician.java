@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @Data
 public class Physician {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String password;
     private String first_name;

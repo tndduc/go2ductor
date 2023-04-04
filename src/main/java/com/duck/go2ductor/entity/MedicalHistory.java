@@ -18,7 +18,7 @@ import javax.persistence.*;
 @Data
 public class MedicalHistory {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long appointment_id;
     private Long id_patient;

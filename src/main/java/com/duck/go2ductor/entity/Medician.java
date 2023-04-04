@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 @Data
 public class Medician {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String manufacturer;

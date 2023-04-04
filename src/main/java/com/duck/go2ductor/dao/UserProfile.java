@@ -16,7 +16,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class UserProfile {
     private Long id;
-    private String password;
     private String user_name;
     private String first_name;
     private String last_name;

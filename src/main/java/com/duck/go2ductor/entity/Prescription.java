@@ -18,7 +18,7 @@ import javax.persistence.*;
 @Data
 public class Prescription {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long id_medical_history;
     private Long id_medicine;

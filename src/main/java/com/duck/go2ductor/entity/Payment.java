@@ -20,7 +20,7 @@ import java.time.LocalTime;
 @Data
 public class Payment {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long id_medical_history;
     private String service;
