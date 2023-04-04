@@ -1,5 +1,9 @@
 package com.duck.go2ductor.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 /**
@@ -9,6 +13,9 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "room")
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

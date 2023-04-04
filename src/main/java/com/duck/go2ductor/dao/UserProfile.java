@@ -1,10 +1,9 @@
-package com.duck.go2ductor.entity;
+package com.duck.go2ductor.dao;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 
 /**
@@ -12,16 +11,13 @@ import java.time.LocalDate;
  * @project go2ductor
  * @on 4/4/2023
  */
-@Entity
-@Table(name = "physician")
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class Physician {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class UserProfile {
     private Long id;
     private String password;
+    private String user_name;
     private String first_name;
     private String last_name;
     private String id_card;
@@ -29,11 +25,4 @@ public class Physician {
     private String phone;
     private String sex;
     private LocalDate dob;
-    private String note;
-    private String education;
-    private String specialization;
-    private String experience;
-
-
-
 }
