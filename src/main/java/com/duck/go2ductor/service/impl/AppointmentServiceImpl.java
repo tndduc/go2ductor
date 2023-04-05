@@ -11,7 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * @author DucTN
@@ -28,17 +29,17 @@ public class AppointmentServiceImpl implements AppointmentService {
     private PatientRepository patientRepository;
 
     @Override
-    public Appointment getAllAppointment(LocalDate dateStart, LocalDate dateEnd) {
+    public List<Appointment> getAllAppointment(Timestamp startDate, Timestamp endDate) {
+        return appointmentRepository.fillAllByStartEnd(startDate,endDate);
+    }
+
+    @Override
+    public Appointment getAppointmentPhysician(String physicianUserName, Timestamp dateStart, Timestamp dateEnd) {
         return null;
     }
 
     @Override
-    public Appointment getAppointmentPhysician(String physicianUserName, LocalDate dateStart, LocalDate dateEnd) {
-        return null;
-    }
-
-    @Override
-    public Appointment getAppointmentPatient(String patientUserName, LocalDate dateStart, LocalDate dateEnd) {
+    public Appointment getAppointmentPatient(String patientUserName, Timestamp dateStart, Timestamp dateEnd) {
         return null;
     }
 

@@ -23,9 +23,9 @@ public class Appointment {
     private Long id;
     private Long id_physician;
     private Long id_patient;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss.SSS",shape = JsonFormat.Shape.STRING)
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",shape = JsonFormat.Shape.STRING)
     private Timestamp start_dt_time;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss.SSS",shape = JsonFormat.Shape.STRING)
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",shape = JsonFormat.Shape.STRING)
     private Timestamp end_dt_time;
     private Long id_room;
 

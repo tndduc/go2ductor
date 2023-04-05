@@ -4,7 +4,9 @@ import com.duck.go2ductor.dao.ApiResponse;
 import com.duck.go2ductor.entity.Appointment;
 import org.springframework.http.ResponseEntity;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * @author DucTN
@@ -12,9 +14,9 @@ import java.time.LocalDate;
  * @on 4/4/2023
  */
 public interface AppointmentService {
-    Appointment getAllAppointment(LocalDate dateStart,LocalDate dateEnd);
-    Appointment getAppointmentPhysician(String physicianUserName,LocalDate dateStart,LocalDate dateEnd);
-    Appointment getAppointmentPatient(String patientUserName,LocalDate dateStart,LocalDate dateEnd);
+    List<Appointment> getAllAppointment(Timestamp dateStart, Timestamp dateEnd);
+    Appointment getAppointmentPhysician(String physicianUserName,Timestamp dateStart,Timestamp dateEnd);
+    Appointment getAppointmentPatient(String patientUserName,Timestamp dateStart,Timestamp dateEnd);
 
     ResponseEntity<Appointment> addAppointment(Appointment appointment);
     Appointment editAppointment(Appointment appointment,Long idAppointment,String physicianUserName);
