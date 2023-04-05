@@ -1,9 +1,9 @@
 package com.duck.go2ductor.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Time;
 import java.sql.Timestamp;
 
 
@@ -23,8 +23,10 @@ public class Appointment {
     private Long id;
     private Long id_physician;
     private Long id_patient;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss.SSS",shape = JsonFormat.Shape.STRING)
     private Timestamp start_dt_time;
-    private Time end_dt_time;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss.SSS",shape = JsonFormat.Shape.STRING)
+    private Timestamp end_dt_time;
     private Long id_room;
 
 
