@@ -5,6 +5,7 @@ import com.duck.go2ductor.entity.Appointment;
 import org.springframework.http.ResponseEntity;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -14,12 +15,12 @@ import java.util.List;
  * @on 4/4/2023
  */
 public interface AppointmentService {
-    List<Appointment> getAllAppointment(Timestamp dateStart, Timestamp dateEnd);
-    Appointment getAppointmentPhysician(String physicianUserName,Timestamp dateStart,Timestamp dateEnd);
-    Appointment getAppointmentPatient(String patientUserName,Timestamp dateStart,Timestamp dateEnd);
+    List<Appointment> getAllAppointment(String startDtTimeStr, String endDtTimeStr) throws ParseException;
+    List<Appointment> getAppointmentPhysician(String startDtTimeStr, String endDtTimeStr,String physicianUserName)throws ParseException;
+    List<Appointment> getAppointmentPatient(String startDtTimeStr, String endDtTimeStr,String patientUserName)throws ParseException;
 
     ResponseEntity<Appointment> addAppointment(Appointment appointment);
-    Appointment editAppointment(Appointment appointment,Long idAppointment,String physicianUserName);
+    ResponseEntity<Appointment> editAppointment(Appointment appointment);
     ApiResponse cancelAppointmentByPatient(Long idAppointment,Long patientUserName);
     ApiResponse cancelAppointmentByPhysician(Long idAppointment,Long physicianUserName);
     ApiResponse checkAppointmentAvailable(Appointment appointment);

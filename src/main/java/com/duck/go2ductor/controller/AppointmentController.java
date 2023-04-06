@@ -28,16 +28,27 @@ public class AppointmentController {
     public ResponseEntity<Appointment> addCategory(@Valid @RequestBody Appointment appointment) {
         return appointmentService.addAppointment(appointment);
     }
-    @GetMapping("/fill-all-by-doctor")
-    public List<Appointment> getExample(@RequestParam(name = "start_dt_time") String startDtTimeStr,
+    @GetMapping("/get-all")
+    public List<Appointment> getAll(@RequestParam(name = "start_dt_time") String startDtTimeStr,
                                         @RequestParam(name = "end_dt_time") String endDtTimeStr) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date startDtTime = dateFormat.parse(startDtTimeStr);
-        Date endDtTime = dateFormat.parse(endDtTimeStr);
+        return appointmentService.getAllAppointment(startDtTimeStr, endDtTimeStr);
+    }
+    @GetMapping("/get-by-physician")
+    public List<Appointment> getByPhysician(@RequestParam(name = "start_dt_time") String startDtTimeStr,
+                                        @RequestParam(name = "end_dt_time") String endDtTimeStr,
+                                            @RequestParam(name = "physicianUserName") String physicianUserName) throws ParseException {
 
-        Timestamp startTimestamp = new Timestamp(startDtTime.getTime());
-        Timestamp endTimestamp = new Timestamp(endDtTime.getTime());
+        return appointmentService.getAppointmentPhysician(startDtTimeStr, endDtTimeStr,physicianUserName);
+    }
+    @GetMapping("/get-by-patient")
+    public List<Appointment> getByPatient(@RequestParam(name = "start_dt_time") String startDtTimeStr,
+                                            @RequestParam(name = "end_dt_time") String endDtTimeStr,
+                                            @RequestParam(name = "patientUserName") String patientUserName) throws ParseException {
 
-        return appointmentService.getAllAppointment(startTimestamp, endTimestamp);
+        return appointmentService.getAppointmentPhysician(startDtTimeStr, endDtTimeStr,patientUserName);
+    }
+    @PostMapping("/edit")
+    public ResponseEntity<Appointment> edit(@Valid @RequestBody Appointment appointment){
+        return appointmentService.editAppointment(appointment);
     }
 }

@@ -20,4 +20,10 @@ import java.util.Optional;
 public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
     @Query(value ="SELECT * FROM appointment  WHERE start_dt_time >= :startDate AND end_dt_time <= :endDate", nativeQuery = true)
     List<Appointment> fillAllByStartEnd(@Param("startDate") Timestamp startDate, @Param("endDate") Timestamp endDate);
+    @Query(value ="SELECT * FROM appointment  WHERE start_dt_time >= :startDate AND end_dt_time <= :endDate AND id_physician = :physicianUserName", nativeQuery = true)
+    List<Appointment> fillAllByPhysicianStartEnd(@Param("startDate") Timestamp startDate, @Param("endDate") Timestamp endDate, @Param("physicianUserName") String physicianUserName);
+    @Query(value ="SELECT * FROM appointment  WHERE start_dt_time >= :startDate AND end_dt_time <= :endDate id_patient =:patientUserName", nativeQuery = true)
+    List<Appointment> fillAllByPatentStartEnd(@Param("startDate") Timestamp startDate, @Param("endDate") Timestamp endDate, @Param("patientUserName") String patientUserName);
+
+
 }

@@ -28,6 +28,7 @@ public class Appointment {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",shape = JsonFormat.Shape.STRING)
     private Timestamp end_dt_time;
     private Long id_room;
+    private String status;
 
 
 }
