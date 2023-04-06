@@ -23,6 +23,6 @@ public interface AppointmentService {
     ResponseEntity<Appointment> editAppointment(Appointment appointment);
     ApiResponse cancelAppointmentByPatient(Appointment appointment);
     ApiResponse cancelAppointmentByPhysician(Appointment appointment);
-    ApiResponse checkAppointmentAvailable(Appointment appointment);
-    ApiResponse deleteAppointment(Long idAppointment);
+
+    ApiResponse deleteAppointment(Appointment appointment);
 }

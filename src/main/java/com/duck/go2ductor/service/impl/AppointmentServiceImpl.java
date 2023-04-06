@@ -103,23 +103,24 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public ApiResponse cancelAppointmentByPhysician(Appointment appointment) {
-        String status = "PatientCanCal";
+        String status = "PhysicianCanCal";
         Long id = appointment.getId();
        int checkCancel= appointmentRepository.cancelAppointment(id,status);
         if (checkCancel==0) {
-            ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "Failed to update appointment status with id :"+id);
-           return apiResponse;
+            return new ApiResponse(Boolean.FALSE, "Failed to update appointment status with id :"+id);
         }
         return new ApiResponse(Boolean.TRUE, "Successfully updated status for appointment with id :"+id);
     }
 
     @Override
-    public ApiResponse checkAppointmentAvailable(Appointment appointment) {
-        return null;
-    }
+    public ApiResponse deleteAppointment(Appointment appointment) {
+         appointmentRepository.delete(appointment);
+        Long id = appointment.getId();
+        boolean isDeleted = !appointmentRepository.existsById(appointment.getId());
+        if (isDeleted) {
+            return new ApiResponse(Boolean.TRUE, "Successfully delete appointment with id :"+id);
 
-    @Override
-    public ApiResponse deleteAppointment(Long idAppointment) {
-        return null;
+        }
+        return new ApiResponse(Boolean.FALSE, "Failed to delete appointment with id :"+id);
     }
 }
