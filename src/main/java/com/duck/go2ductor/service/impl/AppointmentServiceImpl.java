@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -88,13 +90,27 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
     }
     @Override
-    public ApiResponse cancelAppointmentByPatient(Long idAppointment, Long patientUserName) {
-        return null;
+    public ApiResponse cancelAppointmentByPatient(Appointment appointment) {
+        String status = "PatientCanCal";
+        Long id = appointment.getId();
+        int checkCancel= appointmentRepository.cancelAppointment(id,status);
+        if (checkCancel==0) {
+            ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "Failed to update appointment status with id :"+id);
+            return apiResponse;
+        }
+        return new ApiResponse(Boolean.TRUE, "Successfully updated status for appointment with id :"+id);
     }
 
     @Override
-    public ApiResponse cancelAppointmentByPhysician(Long idAppointment, Long physicianUserName) {
-        return null;
+    public ApiResponse cancelAppointmentByPhysician(Appointment appointment) {
+        String status = "PatientCanCal";
+        Long id = appointment.getId();
+       int checkCancel= appointmentRepository.cancelAppointment(id,status);
+        if (checkCancel==0) {
+            ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "Failed to update appointment status with id :"+id);
+           return apiResponse;
+        }
+        return new ApiResponse(Boolean.TRUE, "Successfully updated status for appointment with id :"+id);
     }
 
     @Override

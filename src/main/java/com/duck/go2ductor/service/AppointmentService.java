@@ -21,8 +21,8 @@ public interface AppointmentService {
 
     ResponseEntity<Appointment> addAppointment(Appointment appointment);
     ResponseEntity<Appointment> editAppointment(Appointment appointment);
-    ApiResponse cancelAppointmentByPatient(Long idAppointment,Long patientUserName);
-    ApiResponse cancelAppointmentByPhysician(Long idAppointment,Long physicianUserName);
+    ApiResponse cancelAppointmentByPatient(Appointment appointment);
+    ApiResponse cancelAppointmentByPhysician(Appointment appointment);
     ApiResponse checkAppointmentAvailable(Appointment appointment);
     ApiResponse deleteAppointment(Long idAppointment);
 }

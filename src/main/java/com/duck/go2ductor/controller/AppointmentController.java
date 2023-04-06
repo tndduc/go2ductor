@@ -1,5 +1,6 @@
 package com.duck.go2ductor.controller;
 
+import com.duck.go2ductor.dao.ApiResponse;
 import com.duck.go2ductor.entity.Appointment;
 import com.duck.go2ductor.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +51,13 @@ public class AppointmentController {
     @PostMapping("/edit")
     public ResponseEntity<Appointment> edit(@Valid @RequestBody Appointment appointment){
         return appointmentService.editAppointment(appointment);
+    }
+    @PostMapping("/cancel-physician")
+    public ApiResponse cancelByPhysician(@Valid @RequestBody Appointment appointment){
+        return appointmentService.cancelAppointmentByPhysician(appointment);
+    }
+    @PostMapping("/cancel-patient")
+    public ApiResponse cancelByPatient(@Valid @RequestBody Appointment appointment){
+        return appointmentService.cancelAppointmentByPatient(appointment);
     }
 }
