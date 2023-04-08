@@ -28,7 +28,7 @@ public class JwtTokenUtil {
         Date expiryDate = new Date(now.getTime() + EXPIRATION_TIME);
         return Jwts.builder()
                 .setSubject(authentication.getName())
-                .claim("typeuser",typeuser)
+                .claim("role",typeuser)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, SECRET)
