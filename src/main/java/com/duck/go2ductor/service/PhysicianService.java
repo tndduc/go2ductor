@@ -1,7 +1,11 @@
 package com.duck.go2ductor.service;
 
 import com.duck.go2ductor.dao.ApiResponse;
+import com.duck.go2ductor.dao.LoginRequest;
+import com.duck.go2ductor.dao.UserIdentityAvailability;
 import com.duck.go2ductor.entity.Physician;
+
+import java.util.Optional;
 
 /**
  * @author DucTN
@@ -9,7 +13,11 @@ import com.duck.go2ductor.entity.Physician;
  * @on 4/4/2023
  */
 public interface PhysicianService {
-    Physician addPhysician(Physician physician);
-    ApiResponse deletePhysician(String username);
-    ApiResponse updatePhysician(String username, com.duck.go2ductor.entity.Physician patient);
+    Physician getUserProfile(String username);
+    ApiResponse addPhysician(Physician physician);
+    ApiResponse updatePhysician(Physician physician);
+
+    UserIdentityAvailability checkAuthentication(LoginRequest loginRequest);
+
+
 }

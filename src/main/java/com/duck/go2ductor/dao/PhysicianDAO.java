@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Physician extends UserProfile{
+public class PhysicianDAO extends UserProfile{
     private String education;
     private String specialization;
     private String experience;

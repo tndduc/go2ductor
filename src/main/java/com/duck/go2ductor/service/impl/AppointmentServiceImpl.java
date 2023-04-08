@@ -31,10 +31,10 @@ import java.util.List;
 public class AppointmentServiceImpl implements AppointmentService {
     @Autowired
     private AppointmentRepository appointmentRepository;
-    @Autowired
-    private PhysicianRepository physicianRepository;
-    @Autowired
-    private PatientRepository patientRepository;
+//    @Autowired
+//    private PhysicianRepository physicianRepository;
+//    @Autowired
+//    private PatientRepository patientRepository;
     public List<Timestamp> dateFormat(String startDtTimeStr, String endDtTimeStr)throws ParseException {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date startDtTime = dateFormat.parse(startDtTimeStr);

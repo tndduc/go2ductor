@@ -2,9 +2,13 @@ package com.duck.go2ductor.service.impl;
 
 import com.duck.go2ductor.dao.*;
 import com.duck.go2ductor.entity.Patient;
+import com.duck.go2ductor.repository.PatientRepository;
 import com.duck.go2ductor.service.PatientService;
 import com.duck.go2ductor.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 /**
  * @author DucTN
@@ -13,9 +17,12 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PatientServiceImpl implements UserService, PatientService {
+    @Autowired
+    private PatientRepository patientRepository;
+
     @Override
-    public UserProfile getUserProfile(String username) {
-        return null;
+    public Patient getUserProfile(String username) {
+        return patientRepository.findByUsername(username);
     }
 
     @Override
@@ -28,10 +35,6 @@ public class PatientServiceImpl implements UserService, PatientService {
         return null;
     }
 
-    @Override
-    public UserSummary getCurrentUser(String username) {
-        return null;
-    }
 
     @Override
     public ApiResponse deleteUser(String username) {
@@ -44,10 +47,7 @@ public class PatientServiceImpl implements UserService, PatientService {
         return null;
     }
 
-    @Override
-    public ApiResponse deletePatient(String username) {
-        return null;
-    }
+
 
     @Override
     public ApiResponse updatePatient(String username, Patient patient) {

@@ -2,7 +2,6 @@ package com.duck.go2ductor.service;
 
 import com.duck.go2ductor.dao.ApiResponse;
 import com.duck.go2ductor.entity.Patient;
-import com.duck.go2ductor.dao.SignUpRequest;
 
 /**
  * @author DucTN
@@ -10,7 +9,7 @@ import com.duck.go2ductor.dao.SignUpRequest;
  * @on 4/4/2023
  */
 public interface PatientService {
+    Patient getUserProfile(String username);
     Patient addPatient(Patient patient);
-    ApiResponse deletePatient(String username);
     ApiResponse updatePatient(String username,Patient patient);
 }
