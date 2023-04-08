@@ -1,5 +1,6 @@
 package com.duck.go2ductor.security;
 
+import com.duck.go2ductor.dao.LoginRequest;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -22,12 +23,12 @@ public class JwtTokenUtil {
     private static final String HEADER_STRING = "Authorization";
     private static final String TOKEN_PREFIX = "Bearer";
 
-    public String generateToken(Authentication authentication) {
+    public String generateToken(Authentication authentication,String typeuser) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + EXPIRATION_TIME);
-
         return Jwts.builder()
                 .setSubject(authentication.getName())
+                .claim("typeuser",typeuser)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, SECRET)

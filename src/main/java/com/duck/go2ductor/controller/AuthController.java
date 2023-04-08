@@ -12,10 +12,12 @@ import com.duck.go2ductor.service.PhysicianService;
 import com.duck.go2ductor.service.impl.PatientDetailsServiceImpl;
 import com.duck.go2ductor.service.impl.PhysicianDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,36 +44,48 @@ public class AuthController {
 
 	@PostMapping("/physician/login")
 	public ResponseEntity<?> physicianLogin(@RequestBody LoginRequest loginRequest) {
-		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(
-						loginRequest.getUsername(),
-						loginRequest.getPassword(),
-						physicianDetailsService.loadUserByUsername(loginRequest.getUsername()).getAuthorities()
-				)
-		);
+		try {
+			Authentication authentication = authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(
+							loginRequest.getUsername(),
+							loginRequest.getPassword(),
+							physicianDetailsService.loadUserByUsername(loginRequest.getUsername()).getAuthorities()
+					)
+			);
 
-		SecurityContextHolder.getContext().setAuthentication(authentication);
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+			String token = jwtTokenUtil.generateToken(authentication,loginRequest.getUserType());
 
-		String token = jwtTokenUtil.generateToken(authentication);
+			return ResponseEntity.ok(new JwtResponse(token));
+		}catch (AuthenticationException e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+					new ApiResponse(false, "Invalid username or password")
+			);
+		}
 
-		return ResponseEntity.ok(new JwtResponse(token));
 	}
 
 	@PostMapping("/patient/login")
 	public ResponseEntity<?> patientLogin(@RequestBody LoginRequest loginRequest) {
-		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(
-						loginRequest.getUsername(),
-						loginRequest.getPassword(),
-						patientDetailsService.loadUserByUsername(loginRequest.getUsername()).getAuthorities()
-				)
-		);
+		try {
+			Authentication authentication = authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(
+							loginRequest.getUsername(),
+							loginRequest.getPassword(),
+							patientDetailsService.loadUserByUsername(loginRequest.getUsername()).getAuthorities()
+					)
+			);
 
-		SecurityContextHolder.getContext().setAuthentication(authentication);
+			SecurityContextHolder.getContext().setAuthentication(authentication);
 
-		String token = jwtTokenUtil.generateToken(authentication);
+			String token = jwtTokenUtil.generateToken(authentication,loginRequest.getUserType());
 
-		return ResponseEntity.ok(new JwtResponse(token));
+			return ResponseEntity.ok(new JwtResponse(token));
+		}catch (AuthenticationException e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+					new ApiResponse(false, "Invalid username or password")
+			);
+		}
 	}
 
 	@PostMapping("/physician/register")
