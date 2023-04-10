@@ -56,7 +56,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<Appointment> getAppointmentPhysician(String startDtTimeStr, String endDtTimeStr,String physicianUserName) throws ParseException {
+    public List<Appointment> getAppointmentPhysician(String startDtTimeStr, String endDtTimeStr,Long physicianUserName) throws ParseException {
         List<Timestamp> timestampList = new ArrayList<>(dateFormat(startDtTimeStr,endDtTimeStr));
         Timestamp dateStart = timestampList.get(0);
         Timestamp dateEnd = timestampList.get(1);
@@ -64,7 +64,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<Appointment> getAppointmentPatient(String startDtTimeStr, String endDtTimeStr,String patientUserName) throws ParseException{
+    public List<Appointment> getAppointmentPatient(String startDtTimeStr, String endDtTimeStr,Long patientUserName) throws ParseException{
         List<Timestamp> timestampList = new ArrayList<>(dateFormat(startDtTimeStr,endDtTimeStr));
         Timestamp dateStart = timestampList.get(0);
         Timestamp dateEnd = timestampList.get(1);

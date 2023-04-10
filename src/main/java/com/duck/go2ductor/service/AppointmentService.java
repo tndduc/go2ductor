@@ -16,8 +16,8 @@ import java.util.List;
  */
 public interface AppointmentService {
     List<Appointment> getAllAppointment(String startDtTimeStr, String endDtTimeStr) throws ParseException;
-    List<Appointment> getAppointmentPhysician(String startDtTimeStr, String endDtTimeStr,String physicianUserName)throws ParseException;
-    List<Appointment> getAppointmentPatient(String startDtTimeStr, String endDtTimeStr,String patientUserName)throws ParseException;
+    List<Appointment> getAppointmentPhysician(String startDtTimeStr, String endDtTimeStr,Long id_physician)throws ParseException;
+    List<Appointment> getAppointmentPatient(String startDtTimeStr, String endDtTimeStr,Long id_patient)throws ParseException;
 
     ResponseEntity<Appointment> addAppointment(Appointment appointment);
     ResponseEntity<Appointment> editAppointment(Appointment appointment);

@@ -61,16 +61,14 @@ public class SwaggerConfig {
     }
 
     private ApiKey apiKey() {
-        return new ApiKey("JWT", AUTHORIZATION_HEADER, "header");
+        return new ApiKey("JWT", HttpHeaders.AUTHORIZATION, "header");
     }
 
-    private SecurityReference jwtReference() {
-        return new SecurityReference("JWT", new AuthorizationScope[0]);
-    }
+
     private SecurityContext securityContext() {
         return SecurityContext.builder()
-                .securityReferences(Arrays.asList(jwtReference()))
-                .forPaths(PathSelectors.regex("/api/*"))
+                .securityReferences(Arrays.asList(new SecurityReference("JWT", new AuthorizationScope[0])))
+                .forPaths(PathSelectors.any())
                 .build();
     }
 }

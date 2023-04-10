@@ -5,6 +5,7 @@ import com.duck.go2ductor.entity.Appointment;
 import com.duck.go2ductor.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -34,17 +35,18 @@ public class AppointmentController {
                                         @RequestParam(name = "end_dt_time") String endDtTimeStr) throws ParseException {
         return appointmentService.getAllAppointment(startDtTimeStr, endDtTimeStr);
     }
+    @PreAuthorize("hasRole('PATIENT')")
     @GetMapping("/get-by-physician")
     public List<Appointment> getByPhysician(@RequestParam(name = "start_dt_time") String startDtTimeStr,
                                         @RequestParam(name = "end_dt_time") String endDtTimeStr,
-                                            @RequestParam(name = "physicianUserName") String physicianUserName) throws ParseException {
+                                            @RequestParam(name = "physicianUserName") Long physicianUserName) throws ParseException {
 
         return appointmentService.getAppointmentPhysician(startDtTimeStr, endDtTimeStr,physicianUserName);
     }
     @GetMapping("/get-by-patient")
     public List<Appointment> getByPatient(@RequestParam(name = "start_dt_time") String startDtTimeStr,
                                             @RequestParam(name = "end_dt_time") String endDtTimeStr,
-                                            @RequestParam(name = "patientUserName") String patientUserName) throws ParseException {
+                                            @RequestParam(name = "patientUserName") Long patientUserName) throws ParseException {
 
         return appointmentService.getAppointmentPatient(startDtTimeStr, endDtTimeStr,patientUserName);
     }
