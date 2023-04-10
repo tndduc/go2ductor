@@ -1,6 +1,7 @@
 package com.duck.go2ductor.service;
 
 import com.duck.go2ductor.dao.ApiResponse;
+import com.duck.go2ductor.dao.PatientDAO;
 import com.duck.go2ductor.entity.Patient;
 
 /**
@@ -10,6 +11,7 @@ import com.duck.go2ductor.entity.Patient;
  */
 public interface PatientService {
     Patient getUserProfile(String username);
-    Patient addPatient(Patient patient);
-    ApiResponse updatePatient(String username,Patient patient);
+    PatientDAO getUserDAOProfile(String username);
+    ApiResponse addPatient(Patient patient);
+    ApiResponse updatePatient(Patient patient);
 }

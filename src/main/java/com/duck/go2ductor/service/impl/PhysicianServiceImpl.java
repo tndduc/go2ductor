@@ -6,6 +6,7 @@ import com.duck.go2ductor.repository.PhysicianRepository;
 import com.duck.go2ductor.service.PhysicianService;
 import com.duck.go2ductor.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,15 @@ public class PhysicianServiceImpl implements UserService, PhysicianService {
     public Physician getUserProfile(String username) {
         return physicianRepository.findByUsername(username);
     }
+
+    @Override
+    public PhysicianDAO getUserDAOProfile(String username) {
+        ModelMapper modelMapper = new ModelMapper();
+        Physician physician = physicianRepository.findByUsername(username);
+        PhysicianDAO physicianDAO = modelMapper.map(physician,PhysicianDAO.class);
+        return physicianDAO;
+    }
+
 
     @Override
     public UserIdentityAvailability checkUsernameAvailability(String username) {

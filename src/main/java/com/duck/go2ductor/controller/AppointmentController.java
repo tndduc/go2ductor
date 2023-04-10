@@ -35,7 +35,6 @@ public class AppointmentController {
                                         @RequestParam(name = "end_dt_time") String endDtTimeStr) throws ParseException {
         return appointmentService.getAllAppointment(startDtTimeStr, endDtTimeStr);
     }
-    @PreAuthorize("hasRole('PATIENT')")
     @GetMapping("/get-by-physician")
     public List<Appointment> getByPhysician(@RequestParam(name = "start_dt_time") String startDtTimeStr,
                                         @RequestParam(name = "end_dt_time") String endDtTimeStr,

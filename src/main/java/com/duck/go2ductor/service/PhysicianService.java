@@ -2,6 +2,7 @@ package com.duck.go2ductor.service;
 
 import com.duck.go2ductor.dao.ApiResponse;
 import com.duck.go2ductor.dao.LoginRequest;
+import com.duck.go2ductor.dao.PhysicianDAO;
 import com.duck.go2ductor.dao.UserIdentityAvailability;
 import com.duck.go2ductor.entity.Physician;
 
@@ -14,6 +15,7 @@ import java.util.Optional;
  */
 public interface PhysicianService {
     Physician getUserProfile(String username);
+    PhysicianDAO getUserDAOProfile(String username);
     ApiResponse addPhysician(Physician physician);
     ApiResponse updatePhysician(Physician physician);
 
