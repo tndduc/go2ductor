@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * @author DucTN
@@ -25,7 +26,6 @@ public class MedicalHistory {
     private Long id_physician;
     private Long date_re_examination;
     private String note;
-
-
+    private String status;
 
 }

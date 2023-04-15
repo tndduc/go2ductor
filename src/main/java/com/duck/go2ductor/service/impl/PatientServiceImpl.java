@@ -2,7 +2,9 @@ package com.duck.go2ductor.service.impl;
 
 import com.duck.go2ductor.dao.*;
 import com.duck.go2ductor.entity.Patient;
+import com.duck.go2ductor.entity.Physician;
 import com.duck.go2ductor.repository.PatientRepository;
+import com.duck.go2ductor.repository.PhysicianRepository;
 import com.duck.go2ductor.service.PatientService;
 import com.duck.go2ductor.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,8 @@ import javax.transaction.Transactional;
 public class PatientServiceImpl implements UserService, PatientService {
     @Autowired
     private PatientRepository patientRepository;
+    @Autowired
+    private PhysicianRepository physicianRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -59,8 +63,9 @@ public class PatientServiceImpl implements UserService, PatientService {
 
     @Override
     public ApiResponse addPatient(Patient patient) {
-        Patient physician1 = patientRepository.findByUsername(patient.getUsername());
-        if (physician1 == null){
+        Patient patient1 = patientRepository.findByUsername(patient.getUsername());
+        Physician physician = physicianRepository.findByUsername(patient.getUsername());
+        if (physician == null && patient1 == null){
             patient.setPassword(passwordEncoder.encode(patient.getPassword()));
             patientRepository.save(patient);
             return new ApiResponse(Boolean.TRUE, "Successfully add physician with user :"+patient.getUsername());

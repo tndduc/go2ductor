@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface MedicalHistoryRepository extends JpaRepository<MedicalHistory,Long> {
+    <S extends MedicalHistory> S save(S medicalHistory);
+
 }
