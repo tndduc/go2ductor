@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author DucTN
@@ -16,13 +17,15 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Prescription {
+public class Prescription  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long id_medical_history;
-    private Long id_medicine;
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @JoinColumn(name="id_medical_history", nullable=false,referencedColumnName="id")
+    private MedicalHistory medical_history;
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @JoinColumn(name="physician", nullable=false,referencedColumnName="id")
+    private Medicine medicine;
     private String dosage;
-
-
 }

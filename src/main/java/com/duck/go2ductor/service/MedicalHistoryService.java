@@ -3,6 +3,7 @@ package com.duck.go2ductor.service;
 import com.duck.go2ductor.dao.ApiResponse;
 import com.duck.go2ductor.dao.MedicalHistoryRequest;
 import com.duck.go2ductor.entity.MedicalHistory;
+import org.springframework.http.ResponseEntity;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -14,8 +15,8 @@ import java.util.List;
  */
 public interface MedicalHistoryService {
     ApiResponse addHistory(MedicalHistoryRequest medicalHistoryRequest);
-    ApiResponse editHistory(MedicalHistory medicalHistory);
-    List<MedicalHistory> listHistoryPhysician(String username, Timestamp timeStart, Timestamp timesEnd);
+    ResponseEntity<MedicalHistory> editHistory(MedicalHistory medicalHistory);
+    List<MedicalHistory> listHistoryPhysician();
 
 
 

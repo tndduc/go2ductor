@@ -1,10 +1,12 @@
 package com.duck.go2ductor.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * @author DucTN
@@ -24,5 +26,8 @@ public class Room {
     private String position;
     private String working_hours;
     private String service;
+    @JsonIgnore
+    @OneToMany(mappedBy="room",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private Set<Appointment> appointments;
 
 }

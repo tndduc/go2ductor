@@ -23,12 +23,11 @@ public class JwtTokenUtil {
     private static final String HEADER_STRING = "Authorization";
     private static final String TOKEN_PREFIX = "Bearer";
 
-    public String generateToken(Authentication authentication,String typeuser) {
+    public String generateToken(Authentication authentication) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + EXPIRATION_TIME);
         return Jwts.builder()
                 .setSubject(authentication.getName())
-                .claim("role",typeuser)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, SECRET)

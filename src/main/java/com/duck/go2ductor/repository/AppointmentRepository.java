@@ -32,4 +32,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
     @Transactional
     @Query(value ="UPDATE appointment u SET u.status = :status WHERE u.id = :id" ,nativeQuery = true)
     int cancelAppointment(@Param("id")Long id,@Param("status") String status);
+
+
 }

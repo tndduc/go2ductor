@@ -23,7 +23,9 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long id_medical_history;
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @JoinColumn(name="id_medical_history", nullable=false,referencedColumnName="id")
+    private MedicalHistory medical_history;
     private String review;
     private Integer star;
     private Timestamp date;

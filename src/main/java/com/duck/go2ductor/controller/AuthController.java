@@ -67,7 +67,7 @@ public class AuthController {
 			);
 
 			SecurityContextHolder.getContext().setAuthentication(authentication);
-			String token = jwtTokenUtil.generateToken(authentication,loginRequest.getUserType());
+			String token = jwtTokenUtil.generateToken(authentication);
 
 			return ResponseEntity.ok(new JwtResponse(token));
 		}catch (AuthenticationException e) {
@@ -91,7 +91,7 @@ public class AuthController {
 
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 
-			String token = jwtTokenUtil.generateToken(authentication,loginRequest.getUserType());
+			String token = jwtTokenUtil.generateToken(authentication);
 
 			return ResponseEntity.ok(new JwtResponse(token));
 		}catch (AuthenticationException e) {
@@ -112,16 +112,37 @@ public class AuthController {
 			String fileName = StringUtils.cleanPath(image.getOriginalFilename());
 			Path path = Paths.get(uploadDir + "/" + fileName);
 			Files.copy(image.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-			Physician physician = new Physician(null, username, password, firstname, lastname, card_id, null, null, null, null, null, null, null, null);
+			Physician physician = new Physician();
+			physician.setUsername(username);
+			physician.setPassword(password);
+			physician.setFirst_name(firstname);
+			physician.setLast_name(lastname);
+			physician.setId_card(card_id);
 			physician.setImage(uploadDir + "/" + fileName);
 			physicianService.addPhysician(physician);
 			return ResponseEntity.ok("Physician registration success!");
 	}
 
-
-	@PostMapping("/patient/register")
-	public ResponseEntity<?> patientRegister(@RequestBody Patient patient) {
+	@PostMapping(path = "/patient/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<?> patientRegister(@RequestPart(value = "image", required = true) MultipartFile image,
+											   @RequestParam String username,
+											   @RequestParam String password,
+											   @RequestParam String firstname,
+											   @RequestParam String lastname,
+											   @RequestParam String card_id) throws IOException {
+		String uploadDir = env.getProperty("spring.servlet.multipart.location");
+		String fileName = StringUtils.cleanPath(image.getOriginalFilename());
+		Path path = Paths.get(uploadDir + "/" + fileName);
+		Files.copy(image.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+		Patient patient = new Patient();
+		patient.setUsername(username);
+		patient.setPassword(password);
+		patient.setFirst_name(firstname);
+		patient.setLast_name(lastname);
+		patient.setId_card(card_id);
+		patient.setImage(uploadDir + "/" + fileName);
 		patientService.addPatient(patient);
-		return ResponseEntity.ok(new ApiResponse(true, "Patient registered successfully"));
+		return ResponseEntity.ok("Physician registration success!");
 	}
+
 }

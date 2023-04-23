@@ -27,7 +27,7 @@ public class AppointmentController {
     private  AppointmentService appointmentService;
     //http://localhost:8080/api/appointment/add
     @PostMapping("/add")
-    public ResponseEntity<Appointment> addCategory(@Valid @RequestBody Appointment appointment) {
+    public ResponseEntity<Appointment> add(@Valid @RequestBody Appointment appointment) {
         return appointmentService.addAppointment(appointment);
     }
     @GetMapping("/get-all")

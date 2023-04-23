@@ -1,8 +1,14 @@
 package com.duck.go2ductor.repository;
 
+import com.duck.go2ductor.entity.Appointment;
 import com.duck.go2ductor.entity.MedicalHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * @author DucTN
@@ -11,6 +17,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface MedicalHistoryRepository extends JpaRepository<MedicalHistory,Long> {
-    <S extends MedicalHistory> S save(S medicalHistory);
-
+    
 }

@@ -1,11 +1,13 @@
 package com.duck.go2ductor.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 /**
  * @author DucTN
@@ -22,6 +24,7 @@ public class Physician {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
+    @JsonIgnore
     private String password;
     private String first_name;
     private String last_name;
@@ -34,6 +37,9 @@ public class Physician {
     private String education;
     private String specialization;
     private String experience;
+    @JsonIgnore
+    @OneToMany(mappedBy="physician",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private Set<Appointment> appointments;
 
 
 
