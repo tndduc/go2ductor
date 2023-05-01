@@ -78,13 +78,14 @@ public class PatientServiceImpl implements UserService, PatientService {
 
     @Override
     public ApiResponse updatePatient( Patient patient) {
-        patientRepository.save(patient);
-        Long id = patient.getId();
-        boolean isDeleted = !patientRepository.existsById(patient.getId());
-        if (isDeleted) {
-            return new ApiResponse(Boolean.TRUE, "Successfully update patient with id :"+id);
+        Patient patient1 = patientRepository.findByUsername(patient.getUsername());
+        Physician physician = physicianRepository.findByUsername(patient.getUsername());
+        if (physician == null && patient1 == null){
+            patient.setPassword(passwordEncoder.encode(patient.getPassword()));
+            patientRepository.save(patient);
+            return new ApiResponse(Boolean.TRUE, "Successfully add physician with user :"+patient.getUsername());
         }
-        return new ApiResponse(Boolean.FALSE, "Failed to update patient with id :"+id);
+        return new ApiResponse(Boolean.FALSE, "Failed to add physician with user :"+patient.getUsername());
 
     }
 

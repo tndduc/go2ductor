@@ -1,5 +1,9 @@
 package com.duck.go2ductor.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,11 +25,13 @@ public class Prescription  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
-    @JoinColumn(name="id_medical_history", nullable=false,referencedColumnName="id")
+    @ManyToOne(fetch = FetchType.EAGER )
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinColumn(name="id_medical_history",referencedColumnName="id")
     private MedicalHistory medical_history;
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
-    @JoinColumn(name="physician", nullable=false,referencedColumnName="id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinColumn(name="id_medicine",referencedColumnName="id")
     private Medicine medicine;
     private String dosage;
 }

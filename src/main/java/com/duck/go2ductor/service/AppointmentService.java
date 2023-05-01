@@ -1,6 +1,7 @@
 package com.duck.go2ductor.service;
 
 import com.duck.go2ductor.dao.ApiResponse;
+import com.duck.go2ductor.dao.AppointmentRequest;
 import com.duck.go2ductor.entity.Appointment;
 import org.springframework.http.ResponseEntity;
 
@@ -16,13 +17,13 @@ import java.util.List;
  */
 public interface AppointmentService {
     List<Appointment> getAllAppointment(String startDtTimeStr, String endDtTimeStr) throws ParseException;
-    List<Appointment> getAppointmentPhysician(String startDtTimeStr, String endDtTimeStr,Long id_physician)throws ParseException;
-    List<Appointment> getAppointmentPatient(String startDtTimeStr, String endDtTimeStr,Long id_patient)throws ParseException;
+    List<Appointment> getAppointmentPhysician(String startDtTimeStr, String endDtTimeStr,String id_physician)throws ParseException;
+    List<Appointment> getAppointmentPatient(String startDtTimeStr, String endDtTimeStr,String id_patient)throws ParseException;
 
-    ResponseEntity<Appointment> addAppointment(Appointment appointment);
-    ResponseEntity<Appointment> editAppointment(Appointment appointment);
-    ApiResponse cancelAppointmentByPatient(Appointment appointment);
-    ApiResponse cancelAppointmentByPhysician(Appointment appointment);
+    ResponseEntity<Appointment> addAppointment(AppointmentRequest appointmentRequest);
+    ResponseEntity<Appointment> editAppointment(AppointmentRequest appointmentRequest);
+    ApiResponse cancelAppointmentByPatient(AppointmentRequest appointmentRequest);
+    ApiResponse cancelAppointmentByPhysician(AppointmentRequest appointmentRequest);
 
-    ApiResponse deleteAppointment(Appointment appointment);
+    ApiResponse deleteAppointment(AppointmentRequest appointmentRequest);
 }

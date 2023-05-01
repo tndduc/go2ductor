@@ -3,6 +3,8 @@ package com.duck.go2ductor.service;
 import com.duck.go2ductor.dao.ApiResponse;
 import com.duck.go2ductor.entity.Room;
 
+import java.util.List;
+
 /**
  * @author DucTN
  * @project go2ductor
@@ -11,7 +13,7 @@ import com.duck.go2ductor.entity.Room;
 public interface RoomService {
     ApiResponse addRoom(Room room);
     ApiResponse editRoom(Room room);
-    ApiResponse deleteRoom(Room room);
-
+    ApiResponse deleteRoom(Long roomID);
+    List<Room> getAll();
 
 }

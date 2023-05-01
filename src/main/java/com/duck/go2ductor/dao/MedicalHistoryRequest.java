@@ -2,11 +2,7 @@ package com.duck.go2ductor.dao;
 
 import com.duck.go2ductor.entity.Prescription;
 import lombok.Data;
-
-import javax.persistence.CascadeType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 /**
@@ -16,9 +12,10 @@ import java.util.Set;
  */
 @Data
 public class MedicalHistoryRequest {
+
+    private Long id;
+    @NotNull(message = "appointmentId must not be null")
     private Long appointmentId;
-    private Long patientId;
-    private Long physicianId;
     private Long dateReExamination;
     private String note;
     private String status;

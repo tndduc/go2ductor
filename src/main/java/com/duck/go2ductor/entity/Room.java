@@ -27,7 +27,7 @@ public class Room {
     private String working_hours;
     private String service;
     @JsonIgnore
-    @OneToMany(mappedBy="room",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy="room",fetch = FetchType.LAZY)
     private Set<Appointment> appointments;
 
 }

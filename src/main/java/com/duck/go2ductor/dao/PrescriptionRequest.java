@@ -2,6 +2,8 @@ package com.duck.go2ductor.dao;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * @author DucTN
  * @project go2ductor
@@ -9,6 +11,11 @@ import lombok.Data;
  */
 @Data
 public class PrescriptionRequest {
+    private Long id;
+    @NotNull
     private Long id_medicine;
+    @NotNull
     private String dosage;
+
+    private Long id_medicalHistory;
 }

@@ -1,6 +1,7 @@
 package com.duck.go2ductor.service;
 
 import com.duck.go2ductor.dao.ApiResponse;
+import com.duck.go2ductor.dao.ReviewDAO;
 import com.duck.go2ductor.entity.Review;
 
 import java.util.List;
@@ -11,10 +12,10 @@ import java.util.List;
  * @on 4/14/2023
  */
 public interface ReviewService {
-    ApiResponse addReview(Review review);
-    ApiResponse updateReview(Review review);
-    ApiResponse deleteReview(Review review);
-
+    ApiResponse addReview(ReviewDAO review);
+    ApiResponse updateReview(ReviewDAO review);
+    ApiResponse deleteReview(Long reviewId);
     List<Review> getListReviewPhysician(String username);
+    List<Review> getReview(Long idMedicalHistory);
 
 }

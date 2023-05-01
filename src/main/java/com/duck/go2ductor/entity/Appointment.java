@@ -26,20 +26,17 @@ public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @ManyToOne(fetch = FetchType.EAGER,optional = false)
     @JoinColumn(name="id_physician", nullable=false,referencedColumnName="id")
     private Physician physician;
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
-    @JoinColumn(name="id_patient", nullable=false,referencedColumnName="id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="id_patient", nullable=true,referencedColumnName="id")
     private Patient patient;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",shape = JsonFormat.Shape.STRING)
     private Timestamp start_dt_time;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",shape = JsonFormat.Shape.STRING)
     private Timestamp end_dt_time;
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(fetch = FetchType.EAGER,optional = false)
     @JoinColumn(name="id_room", nullable=false,referencedColumnName="id")
     private Room room;
     private String status;
@@ -47,4 +44,9 @@ public class Appointment {
     @OneToOne(mappedBy = "appointment", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL, optional = false)
     private MedicalHistory medicalHistory;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "appointment_re", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL, optional = false)
+    private MedicalHistory medicalHistory_re;
 }

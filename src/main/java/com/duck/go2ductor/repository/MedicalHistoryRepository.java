@@ -17,5 +17,8 @@ import java.util.List;
  */
 @Repository
 public interface MedicalHistoryRepository extends JpaRepository<MedicalHistory,Long> {
-    
+    @Query("SELECT mh FROM MedicalHistory mh JOIN mh.appointment a WHERE a.start_dt_time >= :startDate AND a.end_dt_time <= :endDate AND a.physician.id = :physicianId")
+    List<MedicalHistory> findAllByPhysicianAndAppointmentDate(@Param("startDate") Timestamp startDate, @Param("endDate") Timestamp endDate, @Param("physicianId") Long physicianId);
+    @Query("SELECT mh FROM MedicalHistory mh JOIN mh.appointment a WHERE a.start_dt_time >= :startDate AND a.end_dt_time <= :endDate AND a.patient.id = :patientId")
+    List<MedicalHistory> findAllByPatientAndAppointmentDate(@Param("startDate") Timestamp startDate, @Param("endDate") Timestamp endDate, @Param("patientId") Long patientId);
 }

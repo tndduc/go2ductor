@@ -88,7 +88,6 @@ public class AuthController {
 							patientDetailsService.loadUserByUsername(loginRequest.getUsername()).getAuthorities()
 					)
 			);
-
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 
 			String token = jwtTokenUtil.generateToken(authentication);
@@ -108,17 +107,22 @@ public class AuthController {
 											   @RequestParam String lastname,
 											   @RequestParam String card_id) throws IOException {
 
-			String uploadDir = env.getProperty("spring.servlet.multipart.location");
-			String fileName = StringUtils.cleanPath(image.getOriginalFilename());
-			Path path = Paths.get(uploadDir + "/" + fileName);
-			Files.copy(image.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 			Physician physician = new Physician();
 			physician.setUsername(username);
 			physician.setPassword(password);
 			physician.setFirst_name(firstname);
 			physician.setLast_name(lastname);
 			physician.setId_card(card_id);
-			physician.setImage(uploadDir + "/" + fileName);
+			if (image.isEmpty()) {
+				physician.setImage(null);
+			}else {
+				String uploadDir = env.getProperty("spring.servlet.multipart.location");
+				byte[] bytes = image.getBytes();
+				String fileName = StringUtils.cleanPath(image.getOriginalFilename());
+				Path path = Paths.get(uploadDir + "/" + fileName);
+				Files.write(path, bytes);
+				physician.setImage(fileName);
+			}
 			physicianService.addPhysician(physician);
 			return ResponseEntity.ok("Physician registration success!");
 	}

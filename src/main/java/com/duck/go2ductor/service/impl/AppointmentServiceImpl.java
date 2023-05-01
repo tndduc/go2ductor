@@ -1,10 +1,15 @@
 package com.duck.go2ductor.service.impl;
 
 import com.duck.go2ductor.dao.ApiResponse;
+import com.duck.go2ductor.dao.AppointmentRequest;
 import com.duck.go2ductor.entity.Appointment;
+import com.duck.go2ductor.entity.Patient;
+import com.duck.go2ductor.entity.Physician;
+import com.duck.go2ductor.entity.Room;
 import com.duck.go2ductor.repository.AppointmentRepository;
 import com.duck.go2ductor.repository.PatientRepository;
 import com.duck.go2ductor.repository.PhysicianRepository;
+import com.duck.go2ductor.repository.RoomRepository;
 import com.duck.go2ductor.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -31,10 +36,12 @@ import java.util.List;
 public class AppointmentServiceImpl implements AppointmentService {
     @Autowired
     private AppointmentRepository appointmentRepository;
-//    @Autowired
-//    private PhysicianRepository physicianRepository;
-//    @Autowired
-//    private PatientRepository patientRepository;
+    @Autowired
+    private PhysicianRepository physicianRepository;
+    @Autowired
+    private PatientRepository patientRepository;
+    @Autowired
+    private RoomRepository roomRepository;
     public List<Timestamp> dateFormat(String startDtTimeStr, String endDtTimeStr)throws ParseException {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date startDtTime = dateFormat.parse(startDtTimeStr);
@@ -56,43 +63,68 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<Appointment> getAppointmentPhysician(String startDtTimeStr, String endDtTimeStr,Long physicianUserName) throws ParseException {
+    public List<Appointment> getAppointmentPhysician(String startDtTimeStr, String endDtTimeStr,String physicianUserName) throws ParseException {
         List<Timestamp> timestampList = new ArrayList<>(dateFormat(startDtTimeStr,endDtTimeStr));
         Timestamp dateStart = timestampList.get(0);
         Timestamp dateEnd = timestampList.get(1);
-        return appointmentRepository.fillAllByPhysicianStartEnd(dateStart,dateEnd,physicianUserName);
+        Physician physician = physicianRepository.findByUsername(physicianUserName);
+        Long id_physician = physician.getId();
+        return appointmentRepository.fillAllByPhysicianStartEnd(dateStart,dateEnd,id_physician);
     }
 
     @Override
-    public List<Appointment> getAppointmentPatient(String startDtTimeStr, String endDtTimeStr,Long patientUserName) throws ParseException{
+    public List<Appointment> getAppointmentPatient(String startDtTimeStr, String endDtTimeStr,String patientUserName) throws ParseException{
         List<Timestamp> timestampList = new ArrayList<>(dateFormat(startDtTimeStr,endDtTimeStr));
         Timestamp dateStart = timestampList.get(0);
         Timestamp dateEnd = timestampList.get(1);
-        return appointmentRepository.fillAllByPatentStartEnd(dateStart,dateEnd,patientUserName);
+        Patient patient = patientRepository.findByUsername(patientUserName);
+        Long id_patient = patient.getId();
+        return appointmentRepository.fillAllByPatentStartEnd(dateStart,dateEnd,id_patient);
     }
 
     @Override
-    public ResponseEntity<Appointment> addAppointment(Appointment appointment) {
+    public ResponseEntity<Appointment> addAppointment(AppointmentRequest appointmentRequest) {
+        Appointment appointment = new Appointment();
+        Room room = roomRepository.findById(appointmentRequest.getId_room()).orElseThrow();
+        if (appointmentRequest.getId_patient()!=null){
+            Patient patient = patientRepository.findById(appointmentRequest.getId_patient()).orElse(null);
+            appointment.setPatient(patient);
+        }
+        Physician physician = physicianRepository.findById(appointmentRequest.getId_physician()).orElse(null);
+        appointment.setRoom(room);
+        appointment.setPhysician(physician);
+        appointment.setStatus(appointmentRequest.getStatus());
+        appointment.setStart_dt_time(appointmentRequest.getStart_dt_time());
+        appointment.setEnd_dt_time(appointmentRequest.getEnd_dt_time());
         Appointment appointmentNew = appointmentRepository.save(appointment);
         return new ResponseEntity<>(appointmentNew, HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<Appointment> editAppointment(Appointment appointment) {
+    public ResponseEntity<Appointment> editAppointment(AppointmentRequest appointmentRequest) {
         try {
-            // Cập nhật bản ghi Appointment trong cơ sở dữ liệu
-            Appointment updatedAppointment = appointmentRepository.save(appointment);
-            // Tạo đối tượng ResponseEntity chứa bản ghi đã cập nhật và mã trạng thái HTTP 200 OK
-            return ResponseEntity.ok(updatedAppointment);
+            Appointment appointment = new Appointment();
+            Room room = roomRepository.findById(appointmentRequest.getId_room()).orElseThrow();
+            Patient patient = patientRepository.findById(appointmentRequest.getId_patient()).orElse(null);
+            Physician physician = physicianRepository.findById(appointmentRequest.getId_physician()).orElse(null);
+            appointment.setId(appointment.getId());
+            appointment.setPatient(patient);
+            appointment.setRoom(room);
+            appointment.setPhysician(physician);
+            appointment.setStatus(appointmentRequest.getStatus());
+            appointment.setStart_dt_time(appointmentRequest.getStart_dt_time());
+            appointment.setEnd_dt_time(appointmentRequest.getEnd_dt_time());
+            Appointment appointmentNew = appointmentRepository.save(appointment);
+            return new ResponseEntity<>(appointmentNew, HttpStatus.CREATED);
         } catch (DataAccessException ex) {
             // Xử lý ngoại lệ và trả về phản hồi lỗi
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
     @Override
-    public ApiResponse cancelAppointmentByPatient(Appointment appointment) {
+    public ApiResponse cancelAppointmentByPatient(AppointmentRequest appointmentRequest) {
         String status = "PatientCanCal";
-        Long id = appointment.getId();
+        Long id = appointmentRequest.getId();
         int checkCancel= appointmentRepository.cancelAppointment(id,status);
         if (checkCancel==0) {
             ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "Failed to update appointment status with id :"+id);
@@ -102,9 +134,9 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public ApiResponse cancelAppointmentByPhysician(Appointment appointment) {
+    public ApiResponse cancelAppointmentByPhysician(AppointmentRequest appointmentRequest) {
         String status = "PhysicianCanCal";
-        Long id = appointment.getId();
+        Long id = appointmentRequest.getId();
        int checkCancel= appointmentRepository.cancelAppointment(id,status);
         if (checkCancel==0) {
             return new ApiResponse(Boolean.FALSE, "Failed to update appointment status with id :"+id);
@@ -113,7 +145,18 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public ApiResponse deleteAppointment(Appointment appointment) {
+    public ApiResponse deleteAppointment(AppointmentRequest appointmentRequest) {
+        Appointment appointment = new Appointment();
+        Room room = roomRepository.findById(appointmentRequest.getId_room()).orElseThrow();
+        Patient patient = patientRepository.findById(appointmentRequest.getId_patient()).orElse(null);
+        Physician physician = physicianRepository.findById(appointmentRequest.getId_physician()).orElse(null);
+        appointment.setId(appointment.getId());
+        appointment.setPatient(patient);
+        appointment.setRoom(room);
+        appointment.setPhysician(physician);
+        appointment.setStatus(appointmentRequest.getStatus());
+        appointment.setStart_dt_time(appointmentRequest.getStart_dt_time());
+        appointment.setEnd_dt_time(appointmentRequest.getEnd_dt_time());
          appointmentRepository.delete(appointment);
         Long id = appointment.getId();
         boolean isDeleted = !appointmentRepository.existsById(appointment.getId());

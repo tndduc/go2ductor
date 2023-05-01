@@ -18,6 +18,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author DucTN
@@ -63,10 +69,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        //the below three lines will add the relevant CORS response headers
+        configuration.addAllowedOrigin("*");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
+        http.cors().configurationSource(corsConfigurationSource()).and().csrf().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint(unauthorizedHandler)
                 .and()
@@ -74,15 +90,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/api/file/**").permitAll()
+                .antMatchers("/api/review**").permitAll()
                 .antMatchers("/api/physician/get-profile/**").permitAll()
                 .antMatchers("/api/physician/update/**").access("hasRole('ROLE_PHYSICIAN')")
                 .antMatchers("/api/medical/**").access("hasRole('ROLE_PHYSICIAN')")
-                .antMatchers("/api/appointment/get-all/**").access("hasRole('ROLE_PHYSICIAN')")
+                .antMatchers("/api/prescription/**").access("hasRole('ROLE_PHYSICIAN')")
+                .antMatchers("/api/medicine/**").access("hasRole('ROLE_PHYSICIAN')")
+                .antMatchers("/api/room/**").access("hasRole('ROLE_PHYSICIAN')")
+                .antMatchers("/api/appointment/**").permitAll()
                 .antMatchers("/swagger-ui.html", "/configuration/**", "/swagger-resources/**", "/v2/api-docs", "/webjars/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .logout().permitAll();
+                .httpBasic().and()
+                .logout().permitAll()
+        ;
+        http.cors();
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
 

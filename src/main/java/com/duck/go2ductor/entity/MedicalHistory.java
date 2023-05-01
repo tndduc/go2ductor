@@ -2,9 +2,12 @@ package com.duck.go2ductor.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -25,14 +28,15 @@ public class MedicalHistory  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne(fetch = FetchType.LAZY,optional = false)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToOne(fetch = FetchType.EAGER,optional = false)
     @JoinColumn(name="appointment_id", nullable=false,referencedColumnName="id")
     private Appointment appointment;
-    private Long date_re_examination;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="date_re_examination", nullable=true,referencedColumnName="id")
+    private Appointment appointment_re;
     private String note;
     private String status;
-
+    @JsonIgnore
     @OneToMany(mappedBy="medical_history",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Set<Prescription> prescriptions;
     @JsonIgnore
@@ -42,6 +46,4 @@ public class MedicalHistory  implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy="medical_history",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Set<Review> reviews;
-
-
 }

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -35,7 +36,7 @@ public class Medicine {
     private BigDecimal price;
     private String image;
     @JsonIgnore
-    @OneToMany(mappedBy="medicine",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private Set<Prescription> prescriptions;
+    @OneToMany(mappedBy="medicine",fetch = FetchType.LAZY)
+    private List<Prescription> prescriptions;
 
 }
