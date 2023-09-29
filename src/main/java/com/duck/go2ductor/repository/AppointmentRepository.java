@@ -21,17 +21,21 @@ import java.util.Optional;
 @Repository
 
 public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
-    @Query(value ="SELECT * FROM appointment  WHERE start_dt_time >= :startDate AND end_dt_time <= :endDate", nativeQuery = true)
+    @Query(value ="SELECT * FROM appointment  WHERE start_dt_time >= :startDate AND end_dt_time <= :endDate ORDER BY id ASC", nativeQuery = true)
     List<Appointment> fillAllByStartEnd(@Param("startDate") Timestamp startDate, @Param("endDate") Timestamp endDate);
-    @Query(value ="SELECT * FROM appointment  WHERE start_dt_time >= :startDate AND end_dt_time <= :endDate AND id_physician = :physicianUserName", nativeQuery = true)
+    @Query(value ="SELECT * FROM appointment  WHERE start_dt_time >= :startDate AND end_dt_time <= :endDate AND id_physician = :physicianUserName ORDER BY id ASC", nativeQuery = true)
     List<Appointment> fillAllByPhysicianStartEnd(@Param("startDate") Timestamp startDate, @Param("endDate") Timestamp endDate, @Param("physicianUserName") Long physicianUserName);
-    @Query(value ="SELECT * FROM appointment  WHERE start_dt_time >= :startDate AND end_dt_time <= :endDate id_patient =:patientUserName", nativeQuery = true)
+    @Query(value ="SELECT * FROM appointment  WHERE start_dt_time >= :startDate AND end_dt_time <= :endDate id_patient =:patientUserName ORDER BY id ASC", nativeQuery = true)
     List<Appointment> fillAllByPatentStartEnd(@Param("startDate") Timestamp startDate, @Param("endDate") Timestamp endDate, @Param("patientUserName") Long patientUserName);
 
     @Modifying
     @Transactional
     @Query(value ="UPDATE appointment u SET u.status = :status WHERE u.id = :id" ,nativeQuery = true)
     int cancelAppointment(@Param("id")Long id,@Param("status") String status);
+    @Modifying
+    @Transactional
+    @Query(value ="UPDATE appointment u SET u.status = :status,u.id_patient =:id_patient WHERE u.id = :id" ,nativeQuery = true)
+    int bookingAppointment(@Param("id")Long id,@Param("status") String status,@Param("id_patient") Long id_patient);
 
 
 }

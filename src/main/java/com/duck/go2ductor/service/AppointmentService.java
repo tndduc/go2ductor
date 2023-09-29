@@ -21,9 +21,11 @@ public interface AppointmentService {
     List<Appointment> getAppointmentPatient(String startDtTimeStr, String endDtTimeStr,String id_patient)throws ParseException;
 
     ResponseEntity<Appointment> addAppointment(AppointmentRequest appointmentRequest);
+    ApiResponse booking(AppointmentRequest appointmentRequest);
+
     ResponseEntity<Appointment> editAppointment(AppointmentRequest appointmentRequest);
     ApiResponse cancelAppointmentByPatient(AppointmentRequest appointmentRequest);
     ApiResponse cancelAppointmentByPhysician(AppointmentRequest appointmentRequest);
 
-    ApiResponse deleteAppointment(AppointmentRequest appointmentRequest);
+    ApiResponse deleteAppointment(Long appointmentID);
 }

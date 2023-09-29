@@ -85,6 +85,8 @@ public class MedicalHistoryServiceImpl implements MedicalHistoryService {
                         () -> new EntityNotFoundException("Could not find medicine with id: " + prescriptionRequest.getId_medicine())
                 );
                 log.info("find Medicine with  id: {}",medicine.getId());
+                prescription.setAmount(prescriptionRequest.getAmount());
+                prescription.setPrice(medicine.getPrice());
                 prescription.setMedicine(medicine);
                 prescriptions.add(prescription);
             }

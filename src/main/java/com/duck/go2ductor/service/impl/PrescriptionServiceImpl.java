@@ -29,7 +29,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @Slf4j
-public class PrescriptionServiceImpl implements PrescriptionService {
+public class    PrescriptionServiceImpl implements PrescriptionService {
     @Autowired
     PrescriptionRepository prescriptionRepository;
     @Autowired
@@ -43,6 +43,8 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         MedicalHistory medicalHistory = medicalHistoryRepository.findById(prescriptionRequest.getId_medicalHistory()).orElse(null);
         Medicine medicine = medicineRepository.findById(prescriptionRequest.getId_medicine()).orElse(null);
         prescription.setMedicine(medicine);
+        prescription.setPrice(medicine.getPrice());
+        prescription.setAmount(prescriptionRequest.getAmount());
         prescription.setMedical_history(medicalHistory);
         prescription.setDosage(prescriptionRequest.getDosage());
         Prescription prescriptionNew = prescriptionRepository.save(prescription);
@@ -56,6 +58,8 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         Medicine medicine = medicineRepository.findById(prescriptionRequest.getId_medicine()).orElse(null);
         prescription.setId(prescriptionRequest.getId());
         prescription.setMedicine(medicine);
+        prescription.setPrice(medicine.getPrice());
+        prescription.setAmount(prescriptionRequest.getAmount());
         prescription.setMedical_history(medicalHistory);
         prescription.setDosage(prescriptionRequest.getDosage());
         Prescription prescriptionNew = prescriptionRepository.save(prescription);

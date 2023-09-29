@@ -64,7 +64,6 @@ public class SwaggerConfig {
         return new ApiKey("JWT", HttpHeaders.AUTHORIZATION, "header");
     }
 
-
     private SecurityContext securityContext() {
         return SecurityContext.builder()
                 .securityReferences(Arrays.asList(new SecurityReference("JWT", new AuthorizationScope[0])))

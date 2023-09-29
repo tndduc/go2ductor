@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserProfile {
+public abstract class UserProfile {
     private Long id;
     private String user_name;
     private String first_name;

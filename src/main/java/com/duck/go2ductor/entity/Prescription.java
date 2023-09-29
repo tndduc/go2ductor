@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * @author DucTN
@@ -34,4 +35,6 @@ public class Prescription  implements Serializable {
     @JoinColumn(name="id_medicine",referencedColumnName="id")
     private Medicine medicine;
     private String dosage;
+    private Integer amount;
+    private BigDecimal price;
 }

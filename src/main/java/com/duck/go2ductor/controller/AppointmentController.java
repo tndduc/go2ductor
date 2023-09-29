@@ -35,6 +35,10 @@ public class AppointmentController {
     public ResponseEntity<Appointment> add(@Valid @RequestBody AppointmentRequest appointmentRequest) {
         return appointmentService.addAppointment(appointmentRequest);
     }
+    @PostMapping("/booking")
+    public ApiResponse booking(@Valid @RequestBody AppointmentRequest appointmentRequest) {
+        return appointmentService.booking(appointmentRequest);
+    }
     @GetMapping("/get-all")
     public List<Appointment> getAll(@RequestParam(name = "start_dt_time") String startDtTimeStr,
                                         @RequestParam(name = "end_dt_time") String endDtTimeStr) throws ParseException {
@@ -71,7 +75,7 @@ public class AppointmentController {
         return appointmentService.cancelAppointmentByPatient(appointmentRequest);
     }
     @PostMapping("/delete")
-    public ApiResponse delete(@Valid @RequestBody AppointmentRequest appointmentRequest){
-        return appointmentService.deleteAppointment(appointmentRequest);
+    public ApiResponse delete(@Valid @RequestBody Long appointmentID){
+        return appointmentService.deleteAppointment(appointmentID);
     }
 }

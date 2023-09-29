@@ -49,7 +49,7 @@ public class PhysicianServiceImpl implements UserService, PhysicianService {
         Physician physician = physicianRepository.findByUsername(username);
         PhysicianDAO physicianDAO = modelMapper.map(physician,PhysicianDAO.class);
         String ipAddress = env.getProperty("server.address");
-        physicianDAO.setImage(ipAddress+":8080/api/file/images/"+physicianDAO.getImage());
+        physicianDAO.setImage(ipAddress+":8080/api/images/"+physicianDAO.getImage());
         return physicianDAO;
     }
 

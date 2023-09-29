@@ -20,6 +20,7 @@ import java.sql.Timestamp;
 @Data
 public class AppointmentRequest {
     private Long id;
+    private String title;
     @NotNull(message = "id_physician must not be null")
     private Long id_physician;
     private Long id_patient;

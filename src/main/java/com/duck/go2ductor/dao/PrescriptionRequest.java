@@ -3,6 +3,7 @@ package com.duck.go2ductor.dao;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 /**
  * @author DucTN
@@ -18,4 +19,6 @@ public class PrescriptionRequest {
     private String dosage;
 
     private Long id_medicalHistory;
+    private Integer amount;
+    private BigDecimal price;
 }

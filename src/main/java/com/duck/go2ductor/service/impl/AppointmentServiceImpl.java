@@ -96,26 +96,43 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointment.setStatus(appointmentRequest.getStatus());
         appointment.setStart_dt_time(appointmentRequest.getStart_dt_time());
         appointment.setEnd_dt_time(appointmentRequest.getEnd_dt_time());
+        appointment.setTitle(appointmentRequest.getTitle());
         Appointment appointmentNew = appointmentRepository.save(appointment);
         return new ResponseEntity<>(appointmentNew, HttpStatus.CREATED);
     }
 
     @Override
+    public ApiResponse booking(AppointmentRequest appointmentRequest) {
+        Long appointmentID = appointmentRequest.getId();
+        Patient patient = patientRepository.findByUsername(appointmentRequest.getStatus());
+        String status = "Patient Booking";
+        int checkCancel= appointmentRepository.bookingAppointment(appointmentID,status, patient.getId());
+        if (checkCancel==0) {
+            return new ApiResponse(Boolean.FALSE, "Failed to update appointment status with id :");
+        }
+        return new ApiResponse(Boolean.TRUE, "Successfully updated status for appointment with id :");
+    }
+
+
+    @Override
     public ResponseEntity<Appointment> editAppointment(AppointmentRequest appointmentRequest) {
         try {
-            Appointment appointment = new Appointment();
+            Appointment appointment = appointmentRepository.findById(appointmentRequest.getId()).orElse(null);
             Room room = roomRepository.findById(appointmentRequest.getId_room()).orElseThrow();
-            Patient patient = patientRepository.findById(appointmentRequest.getId_patient()).orElse(null);
+            if (appointmentRequest.getId_patient()!=null){
+                Patient patient = patientRepository.findById(appointmentRequest.getId_patient()).orElse(null);
+                appointment.setPatient(patient);
+            }
             Physician physician = physicianRepository.findById(appointmentRequest.getId_physician()).orElse(null);
-            appointment.setId(appointment.getId());
-            appointment.setPatient(patient);
             appointment.setRoom(room);
             appointment.setPhysician(physician);
             appointment.setStatus(appointmentRequest.getStatus());
             appointment.setStart_dt_time(appointmentRequest.getStart_dt_time());
             appointment.setEnd_dt_time(appointmentRequest.getEnd_dt_time());
+            appointment.setTitle(appointmentRequest.getTitle());
             Appointment appointmentNew = appointmentRepository.save(appointment);
-            return new ResponseEntity<>(appointmentNew, HttpStatus.CREATED);
+
+            return new ResponseEntity<>(appointmentNew, HttpStatus.OK);
         } catch (DataAccessException ex) {
             // Xử lý ngoại lệ và trả về phản hồi lỗi
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -145,25 +162,18 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public ApiResponse deleteAppointment(AppointmentRequest appointmentRequest) {
-        Appointment appointment = new Appointment();
-        Room room = roomRepository.findById(appointmentRequest.getId_room()).orElseThrow();
-        Patient patient = patientRepository.findById(appointmentRequest.getId_patient()).orElse(null);
-        Physician physician = physicianRepository.findById(appointmentRequest.getId_physician()).orElse(null);
-        appointment.setId(appointment.getId());
-        appointment.setPatient(patient);
-        appointment.setRoom(room);
-        appointment.setPhysician(physician);
-        appointment.setStatus(appointmentRequest.getStatus());
-        appointment.setStart_dt_time(appointmentRequest.getStart_dt_time());
-        appointment.setEnd_dt_time(appointmentRequest.getEnd_dt_time());
-         appointmentRepository.delete(appointment);
-        Long id = appointment.getId();
-        boolean isDeleted = !appointmentRepository.existsById(appointment.getId());
-        if (isDeleted) {
-            return new ApiResponse(Boolean.TRUE, "Successfully delete appointment with id :"+id);
-
+    public ApiResponse deleteAppointment(Long appointmentID) {
+        boolean existsById = appointmentRepository.existsById(appointmentID);
+        if (existsById) {
+            appointmentRepository.deleteById(appointmentID);
+        }else {
+            return new ApiResponse(Boolean.FALSE, "Failed to delete appointment with id :");
         }
-        return new ApiResponse(Boolean.FALSE, "Failed to delete appointment with id :"+id);
+
+        boolean isDeleted = !appointmentRepository.existsById(appointmentID);
+        if (isDeleted) {
+            return new ApiResponse(Boolean.TRUE, "Successfully delete appointment with id :");
+        }
+        return new ApiResponse(Boolean.FALSE, "Failed to delete appointment with id :");
     }
 }
