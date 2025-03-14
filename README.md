@@ -52,5 +52,5 @@ curl -X GET
 License
 This project is licensed under the Apache License, Version 2.0.
 ## Author 
-This project make by `ductn aka Tran Ngoc Duc aka  🦆🦆🦆`
+This project make by `ductn aka Tran Ngoc Duc aka  🦆🦆🦆 and Nguyenvu11`
 Email : `tnd.duc@gmail.com`
